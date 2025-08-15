@@ -3,6 +3,7 @@ from flask import Flask
 from .config import Config
 from .extensions import db, jwt, migrate
 from .routes import auth_bp, dictionaries_bp, ui_bp
+from app.models import User
 
 
 def create_app():
@@ -25,5 +26,12 @@ def create_app():
     # Create DB schemas (dev convenience; for prod use migrations)
     with app.app_context():
         db.create_all()
+
+        if User.query.count() == 0:
+            admin = User(username="admin",email="admin@vp.com", is_admin=True)
+            admin.set_password("Qw123456")
+            db.session.add(admin)
+            db.session.commit()
+            print("Создан админ: admin/Qw123456")
 
     return app
