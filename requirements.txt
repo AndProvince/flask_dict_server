@@ -1,0 +1,10 @@
+# Flask core
+Flask==2.3.2
+# DB and migrations
+Flask-SQLAlchemy==3.0.3
+Flask-Migrate==4.0.4
+# Auth
+Flask-JWT-Extended==4.4.4
+Werkzeug==2.3.7
+# Utils
+python-dotenv==1.0.0

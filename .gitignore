@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+.env
+.venv
+env/
+venv/
+ENV/
+
+# VSCode / PyCharm configs
+.vscode/
+.idea/
+
+# Flask / JWT / Cache files
+data/
+*.sqlite
+*.db
+*.log
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# Compiled translations
+*.mo
+
+# Uploaded / generated dictionary files
+dictionaries/

@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if dictionary %}
+  <h2>Редактирование: {{ dictionary.language }} / {{ dictionary.level }}</h2>
+
+  <a class="btn btn-outline-secondary" href="{{ url_for('ui.upload_json', dict_id=dictionary.id) }}">
+      📂 Загрузить JSON
+  </a>
+
+
+  <form method="post" id="entryForm" action="/dictionary/{{ dictionary.id }}/entry" class="row g-3 mt-1">
+    <input type="hidden" name="db_id" id="db_id">  <!-- скрытое поле для id записи при редактировании -->
+
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <label class="form-label">ID</label>
+        <input class="form-control" type="text" name="entry_id" id="entry_id" placeholder="b1_0001" required>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">level</label>
+        <input class="form-control" type="text" name="level" id="level" value="{{ dictionary.level }}" required disabled>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <label class="form-label">englishWord</label>
+        <input class="form-control" type="text" name="englishWord" id="englishWord" required>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">englishIPA</label>
+        <input class="form-control" type="text" name="englishIPA" id="englishIPA">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">englishIPAru</label>
+        <input class="form-control" type="text" name="englishIPAru" id="englishIPAru">
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <label class="form-label">russianWord</label>
+        <input class="form-control" type="text" name="russianWord" id="russianWord" required>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">russianIPA</label>
+        <input class="form-control" type="text" name="russianIPA" id="russianIPA">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">russianIPAen</label>
+        <input class="form-control" type="text" name="russianIPAen" id="russianIPAen">
+      </div>
+    </div>
+
+    <div class="col-12">
+      <button class="btn btn-primary" type="submit" id="formSubmitBtn">Добавить слово</button>
+    </div>
+
+  </form>
+
+  <hr/>
+  <h4>Слова</h4>
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th>#</th><th>id</th><th>englishWord</th><th>russianWord</th><th>level</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in entries %}
+      <tr>
+        <td>{{ e.id }}</td>
+        <td>{{ e.entry_id }}</td>
+        <td>{{ e.englishWord }}</td>
+        <td>{{ e.russianWord }}</td>
+        <td>{{ e.level }}</td>
+        <td>
+          <form method="post" action="/dictionary/{{ dictionary.id }}/entry/{{ e.id }}/delete" class="d-inline" onsubmit="return confirm('Удалить?')">
+            <button class="btn btn-sm btn-outline-danger">Удалить</button>
+          </form>
+          <button class="btn btn-sm btn-outline-secondary"
+            onclick="editEntry('{{ e.id }}', '{{ e.entry_id }}', '{{ e.englishWord }}', '{{ e.russianWord }}', '{{ e.level }}', '{{ e.englishIPA|default('') }}', '{{ e.englishIPAru|default('') }}', '{{ e.russianIPA|default('') }}', '{{ e.russianIPAen|default('') }}')">
+            Редактировать
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <script>
+    function editEntry(id, entry_id, englishWord, russianWord, level, englishIPA, englishIPAru, russianIPA, russianIPAen) {
+      document.getElementById('db_id').value = id;
+      document.getElementById('entry_id').value = entry_id;
+      document.getElementById('englishWord').value = englishWord;
+      document.getElementById('russianWord').value = russianWord;
+      document.getElementById('level').value = level;
+      document.getElementById('englishIPA').value = englishIPA;
+      document.getElementById('englishIPAru').value = englishIPAru;
+      document.getElementById('russianIPA').value = russianIPA;
+      document.getElementById('russianIPAen').value = russianIPAen;
+
+      document.getElementById('entryForm').action = `/dictionary/{{ dictionary.id }}/entry/${id}/update`;
+      document.getElementById('formSubmitBtn').innerText = 'Сохранить изменения';
+
+      document.getElementById('entryForm').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+
+{% else %}
+  <h2>Новый словарь</h2>
+  <form method="post" action="/dictionary/new" class="row g-3 mt-1" style="max-width: 680px;">
+    <div class="col-md-3">
+      <label class="form-label">Язык</label>
+      <input class="form-control" type="text" name="language" placeholder="EN" required>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Уровень</label>
+      <input class="form-control" type="text" name="level" placeholder="A1" required>
+    </div>
+    <div class="col-12">
+      <button class="btn btn-primary" type="submit">Создать</button>
+    </div>
+  </form>
+{% endif %}
+{% endblock %}
