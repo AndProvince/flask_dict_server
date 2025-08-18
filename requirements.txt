@@ -16,3 +16,4 @@ SQLAlchemy==2.0.43
 tomli==2.2.1
 typing_extensions==4.14.1
 Werkzeug==2.3.7
+gunicorn
