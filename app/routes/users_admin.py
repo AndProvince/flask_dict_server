@@ -33,6 +33,47 @@ def list_users():
     admins_count = User.query.filter_by(is_admin=True).count()
     return render_template("users_list.html", users=users, admins_count=admins_count, me_id=admin.id)
 
+
+@bp.post("/create")
+@jwt_required()
+def create_user():
+    admin = _require_admin()
+    if not admin:
+        flash("Доступ только для администраторов", "danger")
+        return redirect(url_for("ui.index"))
+
+    username = request.form.get("username")
+    email = request.form.get("email")
+    password = request.form.get("password")
+    password2 = request.form.get("password2")
+    is_admin = request.form.get("is_admin").lower() in ("true", "1", "yes", "on")
+
+    if not username or not password:
+        flash("Все поля обязательны")
+        return redirect(url_for("users_admin.list_users"))
+
+    if password != password2:
+        flash("Пароли не совпадают")
+        return redirect(url_for("users_admin.list_users"))
+
+    if User.query.filter_by(username=username).first():
+        flash("Такой пользователь уже существует")
+        return redirect(url_for("users_admin.list_users"))
+
+    new_user = User(
+        username=username,
+        email=email,
+        is_admin=is_admin,
+    )
+    new_user.set_password(password)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    flash(f"Пользователь {username} создан", "success")
+    return redirect(url_for("users_admin.list_users"))
+
+
 @bp.post("/users/<int:user_id>/password")
 @jwt_required()
 def change_password(user_id: int):

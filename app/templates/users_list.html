@@ -74,4 +74,31 @@
     {% endfor %}
   </tbody>
 </table>
+
+<hr class="my-4">
+
+<h4>Создать нового пользователя</h4>
+<form action="{{ url_for('users_admin.create_user') }}" method="post" class="row g-3" style="max-width: 520px;">
+  <div class="col-6">
+    <input class="form-control" type="text" name="username" placeholder="Логин" required>
+  </div>
+    <div class="col-md-6">
+    <input class="form-control" type="text" name="email" placeholder="e-mail" required>
+  </div>
+  <div class="col-md-6">
+    <input class="form-control" type="password" name="password" placeholder="Пароль" minlength="6" required>
+  </div>
+  <div class="col-md-6">
+    <input class="form-control" type="password" name="password2" placeholder="Повторите пароль" minlength="6" required>
+  </div>
+  <div class="col-12">
+    <select class="form-select" name="is_admin">
+      <option value="false" selected>Пользователь</option>
+      <option value="true">Администратор</option>
+    </select>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-success" type="submit">Создать</button>
+  </div>
+</form>
 {% endblock %}
