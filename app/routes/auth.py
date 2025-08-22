@@ -22,6 +22,7 @@ def login():
 
             # сохраняем логин в session для шаблонов
             session["username"] = user.username
+            session["is_admin"] = bool(user.is_admin)
 
             return resp
 
@@ -39,5 +40,6 @@ def logout():
 
     # убираем имя пользователя из session
     session.pop("username", None)
+    session.pop("is_admin", None)
 
     return resp

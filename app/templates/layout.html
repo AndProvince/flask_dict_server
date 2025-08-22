@@ -15,8 +15,9 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="/dashboard">Панель</a></li>
 <!--        <li class="nav-item"><a class="nav-link" href="/dictionary/new">Новый словарь</a></li>-->
-        {% if session.username %}
-        <li class="nav-item"><a class="nav-link" href="/users">Пользователи</a></li>
+        {% if session.is_admin %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('clients_admin.clients_list') }}">Клиенты</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('users_admin.list_users') }}">Пользователи</a></li>
         {% endif %}
       </ul>
       <div class="d-flex">

@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from .config import Config
 from .extensions import db, jwt, migrate
-from .routes import auth_bp, dictionaries_bp, ui_bp, users_admin_bp, clients_bp
+from .routes import auth_bp, dictionaries_bp, ui_bp, users_admin_bp, clients_bp, clients_admin_bp
 from app.models import User
 
 
@@ -24,6 +24,7 @@ def create_app():
     app.register_blueprint(ui_bp)
     app.register_blueprint(users_admin_bp)
     app.register_blueprint(clients_bp)
+    app.register_blueprint(clients_admin_bp)
 
     # Create DB schemas (dev convenience; for prod use migrations)
     with app.app_context():
