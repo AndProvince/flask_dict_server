@@ -3,7 +3,7 @@ import datetime
 
 # --------- Модели ---------
 class Client(db.Model):
-    __bind_key__ = "dicts"
+    __bind_key__ = "clients"
     __tablename__ = "clients"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=True, nullable=False)
@@ -20,7 +20,7 @@ class Client(db.Model):
 
 
 class Progress(db.Model):
-    __bind_key__ = "dicts"
+    __bind_key__ = "clients"
     __tablename__ = "progress"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("clients.id", ondelete="CASCADE"), nullable=False)

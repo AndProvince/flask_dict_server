@@ -13,6 +13,7 @@ class Config:
 
     USERS_DB_PATH = os.environ.get("USERS_DB_PATH", os.path.join(DATA_DIR, "users.db"))
     DICTS_DB_PATH = os.environ.get("DICTS_DB_PATH", os.path.join(DATA_DIR, "dictionaries.db"))
+    CLIENTS_DB_PATH = os.environ.get("CLIENTS_DB_PATH", os.path.join(DATA_DIR, "clients.db"))
     DICTIONARIES_DIR = os.environ.get("DICTIONARIES_DIR", os.path.join(BASE_DIR, "dictionaries"))
 
     # SQLAlchemy binds
@@ -20,6 +21,7 @@ class Config:
     SQLALCHEMY_BINDS = {
         "users": f"sqlite:///{USERS_DB_PATH}",
         "dicts": f"sqlite:///{DICTS_DB_PATH}",
+        "clients": f"sqlite:////{CLIENTS_DB_PATH}",
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

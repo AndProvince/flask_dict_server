@@ -55,8 +55,8 @@ def upload_progress():
     if not user:
         return jsonify({"error": "User not found"}), 404
 
-    # Удаляем старый прогресс
-    Progress.query.filter_by(user_id=user.id).delete()
+    # # Удаляем старый прогресс
+    # Progress.query.filter_by(user_id=user.id).delete()
 
     # Записываем новый
     for word_id, rec in prog.items():
