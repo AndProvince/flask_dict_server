@@ -5,7 +5,7 @@ from ..models.dictionary import Dictionary, DictionaryEntry
 from ..models.user import User
 import json
 from .dictionaries import write_dictionary_file, delete_dictionary_file, get_global_meta, increment_global_meta
-
+from datetime import datetime
 
 bp = Blueprint("ui", __name__, url_prefix="")
 
@@ -14,6 +14,14 @@ bp = Blueprint("ui", __name__, url_prefix="")
 @bp.get("/")
 def index():
     return render_template("index.html")
+
+@bp.context_processor
+def inject_year():
+    return {'current_year': datetime.utcnow().year}
+
+@bp.route("/privacy-policy")
+def privacy_policy():
+    return render_template("privacy_policy.html")
 
 
 @bp.get("/dashboard")

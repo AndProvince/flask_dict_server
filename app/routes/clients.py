@@ -11,7 +11,8 @@ bp = Blueprint("clients", __name__)
 @bp.post("/clients/register")
 def register():
     data = request.json
-    email, password = data.get("email"), data.get("password")
+    email = data.get("email").strip().lower()
+    password = data.get("password")
 
     if not email or not password:
         return jsonify({"error": "Email and password required"}), 400
@@ -29,7 +30,7 @@ def register():
 @bp.post("/clients/login")
 def login():
     data = request.json
-    email = data.get("email")
+    email = data.get("email").strip().lower()
     password = data.get("password")
 
     if not email or not password:
@@ -44,11 +45,12 @@ def login():
 
     return jsonify({"status": "ok", "email": user.email}), 200
 
+
 # ---- Приём прогресса ----
 @bp.post("/clients/progress")
 def upload_progress():
     data = request.json
-    email = data.get("email")
+    email = data.get("email").strip().lower()
     prog = data.get("progress", {})
 
     user = Client.query.filter_by(email=email).first()
@@ -77,7 +79,7 @@ def upload_progress():
 # ---- Выдача прогресса ----
 @bp.get("/clients/progress")
 def fetch_progress():
-    email = request.args.get("email")
+    email = request.args.get("email").strip().lower()
     user = Client.query.filter_by(email=email).first()
     if not user:
         return jsonify({"error": "User not found"}), 404
