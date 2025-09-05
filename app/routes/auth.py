@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, make_response, session
+from flask import Blueprint, render_template, request, redirect, make_response, session, url_for
 from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies
 from ..models.user import User
 from ..extensions import db
 
-bp = Blueprint("auth", __name__)
+bp = Blueprint("auth", __name__, url_prefix="/dictionary")
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
@@ -15,7 +15,7 @@ def login():
         if user and user.check_password(password):
             # создаём токен
             access_token = create_access_token(identity=str(user.id))
-            resp = make_response(redirect("/"))
+            resp = make_response(redirect(url_for("ui.dashboard")))
 
             # сохраняем токен в cookies
             set_access_cookies(resp, access_token)
@@ -33,7 +33,7 @@ def login():
 
 @bp.route("/logout")
 def logout():
-    resp = make_response(redirect("/login"))
+    resp = make_response(redirect(url_for("auth.login")))
 
     # удаляем jwt cookies
     unset_jwt_cookies(resp)

@@ -8,7 +8,7 @@
   </a>
 
 
-  <form method="post" id="entryForm" action="/dictionary/{{ dictionary.id }}/entry" class="row g-3 mt-1">
+  <form method="post" id="entryForm" action="{{ url_for('ui.add_entry_ui', dict_id=dictionary.id) }}" class="row g-3 mt-1">
     <input type="hidden" name="db_id" id="db_id">  <!-- скрытое поле для id записи при редактировании -->
 
     <div class="row mb-3">
@@ -18,7 +18,7 @@
       </div>
       <div class="col-md-2">
         <label class="form-label">level</label>
-        <input class="form-control" type="text" name="level" id="level" value="{{ dictionary.level }}" required disabled>
+        <input class="form-control" type="text" name="level" id="level" value="{{ dictionary.level }}" required readonly>
       </div>
     </div>
 
@@ -75,7 +75,7 @@
         <td>{{ e.russianWord }}</td>
         <td>{{ e.level }}</td>
         <td>
-          <form method="post" action="/dictionary/{{ dictionary.id }}/entry/{{ e.id }}/delete" class="d-inline" onsubmit="return confirm('Удалить?')">
+          <form method="post" action="{{ url_for('ui.delete_entry_ui', dict_id=dictionary.id, entry_db_id=e.id) }}" class="d-inline" onsubmit="return confirm('Удалить?')">
             <button class="btn btn-sm btn-outline-danger">Удалить</button>
           </form>
           <button class="btn btn-sm btn-outline-secondary"
@@ -89,6 +89,8 @@
   </table>
 
   <script>
+    const editEntryBaseUrl = "{{ url_for('ui.edit_entry_ui', dict_id=dictionary.id, entry_db_id=0) }}";
+
     function editEntry(id, entry_id, englishWord, russianWord, level, englishIPA, englishIPAru, russianIPA, russianIPAen) {
       document.getElementById('db_id').value = id;
       document.getElementById('entry_id').value = entry_id;
@@ -100,7 +102,9 @@
       document.getElementById('russianIPA').value = russianIPA;
       document.getElementById('russianIPAen').value = russianIPAen;
 
-      document.getElementById('entryForm').action = `/dictionary/{{ dictionary.id }}/entry/${id}/update`;
+      const urlParts = editEntryBaseUrl.split('/');
+      urlParts[urlParts.indexOf('entry') + 1] = id;
+      document.getElementById('entryForm').action = urlParts.join('/');
       document.getElementById('formSubmitBtn').innerText = 'Сохранить изменения';
 
       document.getElementById('entryForm').scrollIntoView({ behavior: 'smooth' });
@@ -109,7 +113,7 @@
 
 {% else %}
   <h2>Новый словарь</h2>
-  <form method="post" action="/dictionary/new" class="row g-3 mt-1" style="max-width: 680px;">
+  <form method="post" action="{{ url_for('ui.new_dictionary_page') }}" class="row g-3 mt-1" style="max-width: 680px;">
     <div class="col-md-3">
       <label class="form-label">Язык</label>
       <input class="form-control" type="text" name="language" placeholder="EN" required>

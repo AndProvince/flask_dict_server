@@ -4,14 +4,14 @@
   <div class="container-fluid py-5">
     <h1 class="display-6">Dictionary Server for Vocab Punk</h1>
     <p class="col-md-8 fs-5">REST API + UI для управления словарями. Используйте панель управления для создания, редактирования и публикации.</p>
-    <a class="btn btn-primary btn-lg" href="/dashboard">Перейти в панель</a>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('ui.dashboard') }}">Перейти в панель</a>
   </div>
 </div>
 
 <!-- Заготовка под App Store ссылку -->
 <div class="text-center my-4">
   <p>Vocab Punk в App Store:</p>
-  <a href="#" target="_blank">
+  <a href="{{ url_for('ui.index') }}" target="_blank">
     <img src="{{ url_for('static', filename='img/logo-apple.jpeg') }}"
          alt="Download on the App Store"
          style="height:60px;">

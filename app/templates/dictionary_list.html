@@ -4,7 +4,7 @@
   <h2>Словари</h2>
   <h6>v.{{ version }}</h6>
   {% if session.is_admin %}
-  <a class="btn btn-success" href="/dictionary/new">+ Новый словарь</a>
+  <a class="btn btn-success" href="{{ url_for('ui.new_dictionary_page') }}">+ Новый словарь</a>
   {% endif %}
 </div>
 <table class="table table-striped align-middle">
@@ -36,7 +36,7 @@
           </button>
         </form>
         {% if not d.published %}
-        <a class="btn btn-sm btn-primary" href="/dictionary/{{ d.id }}/edit">Редактировать</a>
+        <a class="btn btn-sm btn-primary" href="{{ url_for('ui.edit_dictionary', dict_id=d.id) }}">Редактировать</a>
         <form action="{{ url_for('ui.delete_dictionary', dict_id=d.id) }}" method="post" style="display:inline;"
               onsubmit="return confirm('Удалить словарь {{ d.language }} уровня {{ d.level }}?');">
           <button class="btn btn-sm btn-danger" type="submit">Удалить</button>

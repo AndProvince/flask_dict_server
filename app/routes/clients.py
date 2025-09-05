@@ -5,7 +5,7 @@ from ..models.clients import Client, Progress
 from ..extensions import db
 import datetime
 
-bp = Blueprint("clients", __name__)
+bp = Blueprint("clients", __name__, url_prefix="/dictionary")
 
 # ---- Регистрация ----
 @bp.post("/clients/register")

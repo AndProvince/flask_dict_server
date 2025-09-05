@@ -7,7 +7,7 @@ from ..models.dictionary import Dictionary, DictionaryEntry
 from ..models.meta import DictionariesMeta
 from ..models.user import User
 
-bp = Blueprint("dictionaries", __name__)
+bp = Blueprint("dictionaries", __name__, url_prefix="/dictionary")
 
 # Helpers
 
@@ -72,14 +72,14 @@ def delete_dictionary_file(d: Dictionary) -> bool:
 def list_dictionaries():
     dicts = Dictionary.query.filter_by(published=True).all()
     files = [
-        {"language": d.language, "level": d.level, "url": f"/dictionary/{d.language}/{d.level}"}
+        {"language": d.language, "level": d.level, "url": f"/{d.language}/{d.level}"}
         for d in sorted(dicts, key=lambda x: (x.language, x.level))
     ]
     meta = get_global_meta()
     return jsonify({"files": files, "version": meta.version_str()})
 
 
-@bp.get("/dictionary/<lang>/<level>")
+@bp.get("/<lang>/<level>")
 def get_dictionary(lang: str, level: str):
     d = Dictionary.query.filter_by(language=lang.upper(), level=level.upper(), published=True).first()
     if not d:

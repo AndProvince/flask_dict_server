@@ -4,7 +4,7 @@ from ..extensions import db
 from ..models.user import User
 from ..models.clients import Client
 
-bp = Blueprint("clients_admin", __name__)
+bp = Blueprint("clients_admin", __name__, url_prefix="/dictionary")
 
 
 @bp.get("/clients/all")

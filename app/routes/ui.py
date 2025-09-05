@@ -7,7 +7,7 @@ import json
 from .dictionaries import write_dictionary_file, delete_dictionary_file, get_global_meta, increment_global_meta
 from datetime import datetime
 
-bp = Blueprint("ui", __name__, url_prefix="")
+bp = Blueprint("ui", __name__, url_prefix="/dictionary")
 
 
 # --- UI pages ---
@@ -31,12 +31,12 @@ def dashboard():
     return render_template("dictionary_list.html", dictionaries=dicts, version=version)
 
 
-@bp.get("/dictionary/new")
+@bp.get("/new")
 def new_dictionary_page():
     return render_template("dictionary_edit.html", dictionary=None)
 
 
-@bp.post("/dictionary/new")
+@bp.post("/new")
 @jwt_required()
 def create_dictionary_ui():
     user_id = int(get_jwt_identity())
@@ -63,7 +63,7 @@ def create_dictionary_ui():
     return redirect(url_for("ui.edit_dictionary", dict_id=d.id))
 
 
-@bp.get("/dictionary/<int:dict_id>/edit")
+@bp.get("/<int:dict_id>/edit")
 @jwt_required()
 def edit_dictionary(dict_id: int):
     user_id = int(get_jwt_identity())
@@ -78,7 +78,7 @@ def edit_dictionary(dict_id: int):
     return render_template("dictionary_edit.html", dictionary=d, entries=entries)
 
 
-@bp.route("/dictionary/<int:dict_id>/upload_json", methods=["GET", "POST"])
+@bp.route("/<int:dict_id>/upload_json", methods=["GET", "POST"])
 @jwt_required()
 def upload_json(dict_id):
     user_id = int(get_jwt_identity())
@@ -136,7 +136,7 @@ def upload_json(dict_id):
     return render_template("upload_json.html", dictionary=d)
 
 
-@bp.route("/dictionary/<int:dict_id>/delete", methods=["POST"])
+@bp.route("/<int:dict_id>/delete", methods=["POST"])
 @jwt_required()
 def delete_dictionary(dict_id):
     user_id = int(get_jwt_identity())
@@ -154,7 +154,7 @@ def delete_dictionary(dict_id):
     return redirect(url_for("ui.dashboard"))
 
 
-@bp.post("/dictionary/<int:dict_id>/entry")
+@bp.post("/<int:dict_id>/entry")
 @jwt_required()
 def add_entry_ui(dict_id: int):
     user_id = int(get_jwt_identity())
@@ -200,7 +200,7 @@ def add_entry_ui(dict_id: int):
     return redirect(url_for("ui.edit_dictionary", dict_id=dict_id))
 
 
-@bp.post("/dictionary/<int:dict_id>/entry/<int:entry_db_id>/update")
+@bp.post("/<int:dict_id>/entry/<int:entry_db_id>/update")
 @jwt_required()
 def edit_entry_ui(dict_id: int, entry_db_id: int):
     user_id = int(get_jwt_identity())
@@ -226,7 +226,7 @@ def edit_entry_ui(dict_id: int, entry_db_id: int):
     return redirect(url_for("ui.edit_dictionary", dict_id=dict_id))
 
 
-@bp.post("/dictionary/<int:dict_id>/entry/<int:entry_db_id>/delete")
+@bp.post("/<int:dict_id>/entry/<int:entry_db_id>/delete")
 @jwt_required()
 def delete_entry_ui(dict_id: int, entry_db_id: int):
     user_id = int(get_jwt_identity())
@@ -245,7 +245,7 @@ def delete_entry_ui(dict_id: int, entry_db_id: int):
     return redirect(url_for("ui.edit_dictionary", dict_id=dict_id))
 
 
-@bp.route("/dictionary/<int:dict_id>/toggle_publish", methods=["POST"])
+@bp.route("/<int:dict_id>/toggle_publish", methods=["POST"])
 @jwt_required()
 def toggle_publish(dict_id):
     """Переключает публикацию словаря: публикует или снимает с публикации."""

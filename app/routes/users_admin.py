@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..extensions import db
 from ..models.user import User
 
-bp = Blueprint("users_admin", __name__)
+bp = Blueprint("users_admin", __name__, url_prefix="/dictionary")
 
 def _current_admin():
     """Возвращает (user_id:int, user:User|None). Флешит и редиректит пусть вызывающие роуты сами."""

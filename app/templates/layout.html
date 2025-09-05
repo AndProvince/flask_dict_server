@@ -10,10 +10,10 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">Dictionaries</a>
+    <a class="navbar-brand" href="{{ url_for('ui.index') }}">Dictionaries</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="/dashboard">Панель</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('ui.dashboard') }}">Панель</a></li>
         {% if session.is_admin %}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('clients_admin.clients_list') }}">Клиенты</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('users_admin.list_users') }}">Пользователи</a></li>
@@ -22,9 +22,9 @@
       <div class="d-flex">
         {% if session.username %}
           <span class="navbar-text me-3">👋 {{ session.username }}</span>
-          <a class="btn btn-outline-light" href="/logout">Выход</a>
+          <a class="btn btn-outline-light" href="{{ url_for('auth.logout') }}">Выход</a>
         {% else %}
-          <a class="btn btn-outline-light" href="/login">Вход</a>
+          <a class="btn btn-outline-light" href="{{ url_for('auth.login') }}">Вход</a>
         {% endif %}
       </div>
     </div>
