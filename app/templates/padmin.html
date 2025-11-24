@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+<h2 class="text-xl font-semibold mb-4">
+  {% if project %}Edit "{{ project.title }}"{% else %}Add New{% endif %}
+</h2>
+
+<form method="post" enctype="multipart/form-data" class="space-y-4 bg-white p-4 rounded-xl shadow">
+  {% if project %}
+    <input type="hidden" name="id" value="{{ project.id }}">
+  {% endif %}
+
+  <select name="type" class="border p-2 rounded">
+    <option value="project" {% if project and project.type=='project' %}selected{% endif %}>Project</option>
+    <option value="event" {% if project and project.type=='event' %}selected{% endif %}>Event</option>
+  </select>
+
+  <input type="text" name="title" value="{{ project.title if project else '' }}"
+         placeholder="Title" class="border p-2 rounded w-full" required>
+  <textarea name="summary" placeholder="Summary / Event description"
+            class="border p-2 rounded w-full">{{ project.summary if project else '' }}</textarea>
+  <input type="text" name="tags" value="{{ project.tags if project else '' }}"
+         placeholder="Tags (comma separated)" class="border p-2 rounded w-full">
+  <input type="text" name="link" value="{{ project.link if project else '' }}"
+         placeholder="Project link" class="border p-2 rounded w-full">
+  <input type="date" name="date" class="border p-2 rounded" required
+         value="{{ project.date.strftime('%Y-%m-%d') if project else '' }}">
+
+  {% if project and project.image_url %}
+    <div class="mt-2">
+      <img src="{{ url_for('ui_main.uploaded_file', filename=project.image_url) }}"
+           alt="{{ project.title }}" class="h-24 rounded mb-2">
+    </div>
+  {% endif %}
+
+  <input type="file" name="image" class="border p-2 rounded w-full">
+
+  <button class="bg-indigo-600 text-white px-4 py-2 rounded">
+    {% if project %}Update{% else %}Add{% endif %}
+  </button>
+</form>
+
+<hr class="my-8">
+
+<h2 class="text-lg font-semibold mb-4">All Items</h2>
+<table class="w-full text-sm border-collapse">
+  <thead>
+    <tr class="text-left border-b">
+      <th class="p-2">Type</th>
+      <th class="p-2">Title</th>
+      <th class="p-2">Date</th>
+      <th class="p-2">Image</th>
+      <th class="p-2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in projects %}
+    <tr class="border-b">
+      <td class="p-2">{{ p.type }}</td>
+      <td class="p-2">{{ p.title }}</td>
+      <td class="p-2">{{ p.date.strftime('%Y-%m-%d') }}</td>
+      <td class="p-2">
+        {% if p.image_url %}
+          <img src="{{ url_for('ui_main.uploaded_file', filename=p.image_url) }}"
+               alt="{{ p.title }}" class="h-12 rounded">
+        {% endif %}
+      </td>
+      <td class="p-2 space-x-2">
+        <a href="{{ url_for('ui_main.admin', edit=p.id) }}"
+           class="text-indigo-600 hover:underline">Edit</a>
+        <form action="{{ url_for('ui_main.delete_project', pid=p.id) }}"
+              method="post" style="display:inline;">
+          <button type="submit" class="text-red-600 hover:underline"
+                  onclick="return confirm('Delete this item?')">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

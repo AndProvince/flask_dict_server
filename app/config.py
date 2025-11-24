@@ -14,6 +14,11 @@ class Config:
     USERS_DB_PATH = os.environ.get("USERS_DB_PATH", os.path.join(DATA_DIR, "users.db"))
     DICTS_DB_PATH = os.environ.get("DICTS_DB_PATH", os.path.join(DATA_DIR, "dictionaries.db"))
     CLIENTS_DB_PATH = os.environ.get("CLIENTS_DB_PATH", os.path.join(DATA_DIR, "clients.db"))
+
+    PROJECTS_DB_PATH = os.environ.get("PROJECTS_DB_PATH", os.path.join(DATA_DIR, "projects.db"))
+    # настройки для загрузки файлов
+    UPLOAD_DIR = os.environ.get("UPLOAD_DIR", os.path.join(BASE_DIR, "uploads"))
+
     DICTIONARIES_DIR = os.environ.get("DICTIONARIES_DIR", os.path.join(BASE_DIR, "dictionaries"))
 
     # SQLAlchemy binds
@@ -22,6 +27,7 @@ class Config:
         "users": f"sqlite:///{USERS_DB_PATH}",
         "dicts": f"sqlite:///{DICTS_DB_PATH}",
         "clients": f"sqlite:////{CLIENTS_DB_PATH}",
+        "projects": f"sqlite:////{PROJECTS_DB_PATH}",
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

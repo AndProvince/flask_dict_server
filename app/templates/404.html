@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Страница не найдена — Andrei Ponomarev{% endblock %}
+{% block content %}
+<section class="min-h-[60vh] flex items-center justify-center">
+  <div class="text-center space-y-4">
+    <h1 class="text-6xl font-black">404</h1>
+    <p class="text-white/70">Такой страницы нет. Вернуться <a class="underline" href="{{ url_for('ui_main.index') }}">домой</a>.</p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Andrei Ponomarev{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-gray-50 text-gray-800">
+<header class="bg-white shadow-sm sticky top-0 z-20">
+  <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-semibold">Andrei Ponomarev</h1>
+      <p class="text-sm text-gray-500">A unique blend of business administrator, project and product manager in IT • DWH • Web • Desktop • Mobile app</p>
+    </div>
+    <nav class="space-x-4 text-sm text-gray-600">
+      <a href="/" class="hover:underline">Home</a>
+      <a href="/admin" class="hover:underline">Admin</a>
+    </nav>
+  </div>
+</header>
+<main class="max-w-5xl mx-auto px-4 py-8">
+
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</div>
+
+</main>
+<footer class="mt-10 py-6 bg-white border-t">
+  <div class="max-w-5xl mx-auto px-4 text-sm text-gray-500">
+    © {{ current_year }} Andrei Ponomarev
+    <a href="mailto:4ponomarev@gmail.com" class="text-indigo-600 hover:underline">
+    4ponomarev@gmail.com
+    </a>
+  </div>
+</footer>
+</body>
+</html>

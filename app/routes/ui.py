@@ -10,7 +10,7 @@ from datetime import datetime
 bp = Blueprint("ui", __name__, url_prefix="/dictionary")
 
 
-# --- UI pages ---
+# --- UI dictionary pages ---
 @bp.get("/")
 def index():
     return render_template("index.html")
